@@ -1,167 +1,124 @@
-# Hệ Thống Dashboard Xe Điện Thông Minh
+# Hệ Thống Dashboard Xe Đa Năng
 
-## 1. Mục Tiêu
-Xây dựng hệ thống bảng điều khiển xe điện hiện đại với giao diện sci-fi, tích hợp đa cảm biến và tối ưu năng lượng.
+## 1. Mô Tả Hệ Thống
+Bảng điều khiển mô phỏng xe với khả năng chuyển đổi giữa các loại động cơ và chế độ lái khác nhau.
 
-## 2. Yêu Cầu Chức Năng
+## 2. Tính Năng Chính
 
-### 2.1. Giao Diện Dashboard
-- **Hiển thị tốc độ:**
-  * Đồng hồ số 0-180 km/h
-  * Kim chỉ với màu sắc thay đổi theo mức tiêu thụ điện
-  * Hiển thị công suất động cơ hiện tại (kW)
+### 2.1. Chuyển Đổi Loại Xe
+- **Button 1: Chuyển loại động cơ**
+  * Xăng (Petrol)
+  * Diesel
+  * Điện (Electric)
+  * LED RGB hiển thị trạng thái:
+    - Đỏ: Xăng
+    - Vàng: Diesel
+    - Xanh: Điện
 
-- **Hiển thị pin và phục hồi năng lượng:**
-  * LED strip hiển thị mức pin (0-100%)
-  * Gauge hiển thị tái tạo năng lượng khi phanh
-  * Dự đoán quãng đường dựa trên mức pin và tiêu thụ
+### 2.2. Chế Độ Lái
+- **Button 2: Chuyển chế độ vận hành**
+  * ECO: Tiết kiệm nhiên liệu/pin
+  * NORMAL: Cân bằng
+  * SPORT: Hiệu suất cao
+  * LED RGB hiển thị:
+    - Xanh lá: ECO
+    - Trắng: NORMAL
+    - Đỏ: SPORT
 
-- **Hiển thị chế độ lái (Drive Mode):**
-  * ECO: Tối ưu tiết kiệm pin
-  * NORMAL: Cân bằng hiệu suất
-  * SPORT: Tối đa công suất
-  * Hiệu ứng chuyển đổi với LED RGB
+### 2.3. Điều Khiển Nhiên Liệu
+- **4 Button Mô Phỏng Nạp Nhiên Liệu**
+  * Button 3-6: Điều chỉnh mức nhiên liệu
+  * Mỗi nút tương đương 25% mức nhiên liệu
+  * Trạng thái hiển thị LED:
+    - 1 nút = 25%
+    - 2 nút = 50%
+    - 3 nút = 75%
+    - 4 nút = 100%
 
-- **Thông số vận hành:**
-  * Nhiệt độ pin và động cơ
-  * Độ ẩm hệ thống làm mát
-  * Hiệu suất sạc và xả
+### 2.4. Điều Khiển Lái
+- **Button 7: Start/Stop**
+  * Start: Bắt đầu mô phỏng lái
+  * Stop: Dừng xe, cho phép nạp nhiên liệu
+  * Vô hiệu hóa buttons nạp khi đang chạy
+  * Kích hoạt lại buttons theo mức còn lại khi dừng
 
-### 2.2. Phần Cứng ESP32
-- **Điều Khiển Chế Độ:**
-  * Nút bấm chuyển đổi chế độ lái (ECO/NORMAL/SPORT)
-  * LED RGB hiển thị chế độ hiện tại
-    - Xanh: ECO mode
-    - Trắng: Normal mode
-    - Đỏ: Sport mode
-  * Lưu chế độ vào EEPROM
+### 2.5. Điều Khiển Tốc Độ
+- **Biến Trở (Potentiometer)**
+  * Điều chỉnh tốc độ mô phỏng
+  * Range: 0-200 km/h
+  * Ảnh hưởng đến mức tiêu thụ nhiên liệu
 
-- **Mô Phỏng Dữ Liệu:**
-  * Pin và hiệu suất thay đổi theo chế độ
-  * Đọc nhiệt độ từ DHT22
-  * Tính toán quãng đường dự kiến
-  * Nút chọn chế độ lái tinh chỉnh
-  * LED RGB hiển thị trạng thái
-  * OLED hiển thị chi tiết
+## 3. Quy Tắc Hoạt Động
 
-### 2.3. Xử Lý Dữ Liệu
-- **EEPROM:**
-  * Lưu lịch sử tiêu thụ điện
-  * Thống kê hiệu suất pin
-  * Cấu hình chế độ lái ưa thích
-
-## 3. Quản Lý Tài Nguyên
-
-### 3.1. Độ Ưu Tiên Task
-- **Cao Nhất:**
-  * Giám sát pin và nhiệt độ
-  * Tính toán hiệu suất real-time
-  * Điều khiển chế độ lái
-
-- **Trung Bình:**
-  * Animation giao diện
-  * Tính toán dự đoán quãng đường
-  * Hiển thị thông số chi tiết
-
-- **Thấp Nhất:**
-  * Đồng bộ dữ liệu
-  * Phân tích xu hướng tiêu thụ
-  * Backup cấu hình
-
-### 3.2. Quản Lý Bộ Nhớ
-- **EEPROM:**
-  * Profile người lái
-  * Lịch sử vận hành
-  * Thông số hiệu chuẩn pin
-  * Chế độ lái yêu thích
-  * Số km còn lại
-
-
-### 3.3. Kỹ Thuật
-- ESP32 + DHT22 + Cảm biến dòng điện
-- Server PHP/MySQL với phân tích dữ liệu
-- Cập nhật: 500ms/lần cho dữ liệu quan trọng
-
-## 4. Kiến Trúc Hệ Thống
-
-### 4.1. Điều Khiển Chế Độ Lái
-```mermaid
-graph LR
-    A[Nút Bấm] -->|Interrupt| B[ESP32]
-    B -->|Chuyển Chế Độ| C{Chế Độ}
-    C -->|ECO| D[LED Xanh]
-    C -->|NORMAL| E[LED Trắng]
-    C -->|SPORT| F[LED Đỏ]
-    
-    B -->|Cập Nhật| G[EEPROM]
-    B -->|HTTP| H[Server]
-    H -->|Websocket| I[Qt Dashboard]
-    
-    subgraph Điều Khiển
-        C1[Chế Độ Lái]
-        C2[LED RGB]
-        C3[OLED]
-    end
-```
-
-### 4.2. Luồng Dữ Liệu Thời Gian Thực
-```mermaid
-sequenceDiagram
-    participant S as Sensors
-    participant E as ESP32
-    participant DB as Database
-    participant Q as Qt UI
-    
-    loop Every 500ms
-        S->>E: Đọc dòng điện & nhiệt độ
-        E->>E: Tính hiệu suất
-        E->>DB: Cập nhật trạng thái
-        Q->>DB: Lấy dữ liệu mới
-        Q->>Q: Cập nhật giao diện
-    end
-    
-    loop Every 1s
-        E->>E: Tính quãng đường dự đoán
-        E->>DB: Lưu thống kê
-    end
-```
-
-### 4.3. Mô Phỏng Theo Chế Độ
+### 3.1. Khởi Động Hệ Thống
 ```mermaid
 graph TD
-    A[Chế Độ Lái] --> B{Tính Toán}
-    B -->|ECO| C[Tiết Kiệm]
-    B -->|NORMAL| D[Cân Bằng]
-    B -->|SPORT| E[Hiệu Suất]
-
-    C -->|Pin| F[Giảm 5%/phút]
-    D -->|Pin| G[Giảm 8%/phút]
-    E -->|Pin| H[Giảm 12%/phút]
-
-    F -->|Range| I[+30% Range]
-    G -->|Range| J[Base Range]
-    H -->|Range| K[-20% Range]
+    A[Khởi động] --> B[Kiểm tra EEPROM]
+    B --> C{Có dữ liệu cũ?}
+    C -->|Có| D[Khôi phục trạng thái]
+    C -->|Không| E[Cấu hình mặc định]
+    D --> F[Sẵn sàng]
+    E --> F
 ```
 
-### 4.4. Lưu Trữ EEPROM
+### 3.2. Quy Trình Nạp Nhiên Liệu
 ```mermaid
-classDiagram
-    class DriveMode {
-        +MODE_ECO
-        +MODE_NORMAL
-        +MODE_SPORT
-        +getCurrentMode()
-        +setMode(mode)
-    }
-    
-    class EEPROMData {
-        +lastMode: uint8_t
-        +buttonPresses: uint32_t
-        +totalRuntime: uint32_t
-        +save()
-        +load()
-    }
-    
-    DriveMode --> EEPROMData
+flowchart TD
+    A[Xe dừng] --> B{Kiểm tra nút}
+    B --> C[Button 3-6]
+    C --> D{Tính % nhiên liệu}
+    D -->|1 nút| E[25%]
+    D -->|2 nút| F[50%]
+    D -->|3 nút| G[75%]
+    D -->|4 nút| H[100%]
 ```
 
+### 3.3. Quy Trình Lái
+```mermaid
+sequenceDiagram
+    participant S as Start Button
+    participant F as Fuel Buttons
+    participant P as Potentiometer
+    participant D as Display
+
+    S->>F: Vô hiệu hóa
+    loop Mỗi 1 giây
+        P->>D: Cập nhật tốc độ
+        D->>D: Tính tiêu hao
+        D->>D: Cập nhật LED fuel
+    end
+    S->>F: Kích hoạt lại khi dừng
+```
+
+## 4. Mô Phỏng Tiêu Hao
+
+### 4.1. Tỷ Lệ Tiêu Hao Theo Loại
+```mermaid
+graph LR
+    A[Loại xe] --> B{Tốc độ cao?}
+    B -->|Xăng| C[12%/phút]
+    B -->|Diesel| D[10%/phút]
+    B -->|Điện| E[15%/phút]
+    
+    B -->|Tốc độ thấp| F[5-8%/phút]
+```
+
+### 4.2. Ảnh Hưởng Chế Độ Lái
+- **ECO Mode:**
+  * Giảm 30% tiêu hao
+  * Giới hạn tốc độ 60%
+
+- **NORMAL Mode:**
+  * Tiêu hao chuẩn
+  * Không giới hạn tốc độ
+
+- **SPORT Mode:**
+  * Tăng 20% tiêu hao
+  * Tăng 10% tốc độ tối đa
+
+## 5. Lưu Trữ EEPROM
+- Loại xe cuối cùng
+- Chế độ lái cuối
+- Mức nhiên liệu
+- Số km đã đi
+- Thời gian vận hành
